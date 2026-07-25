@@ -1,6 +1,6 @@
 {
   "name": "terradeed-mcp-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TerraDeed Scrape API MCP server — x402-powered web scraping and structured extraction",
   "type": "module",
   "main": "index.js",
@@ -16,7 +16,14 @@
     "zod": "^3.22.0",
     "viem": "^2.0.0"
   },
-  "keywords": ["mcp", "x402", "web-scraping", "ai-agents", "usdc", "base"],
+  "keywords": [
+    "mcp",
+    "x402",
+    "web-scraping",
+    "ai-agents",
+    "usdc",
+    "base"
+  ],
   "author": "Alexander Gentry <alex@terradeed.co.uk>",
   "license": "MIT",
   "repository": {
