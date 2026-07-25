@@ -1,0 +1,27 @@
+{
+  "name": "terradeed-mcp-server",
+  "version": "0.1.0",
+  "description": "TerraDeed Scrape API MCP server — x402-powered web scraping and structured extraction",
+  "type": "module",
+  "main": "index.js",
+  "bin": {
+    "terradeed-mcp-server": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "inspect": "npx @modelcontextprotocol/inspector node index.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.0",
+    "viem": "^2.0.0"
+  },
+  "keywords": ["mcp", "x402", "web-scraping", "ai-agents", "usdc", "base"],
+  "author": "Alexander Gentry <alex@terradeed.co.uk>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/terradeed/terradeed-mcp-server.git"
+  },
+  "homepage": "https://terradeed.co.uk"
+}
