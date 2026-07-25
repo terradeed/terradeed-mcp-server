@@ -31,5 +31,5 @@
     "url": "https://github.com/terradeed/terradeed-mcp-server.git"
   },
   "homepage": "https://terradeed.co.uk",
-  "mcpName": "terradeed-mcp-server"
+  "mcpName": "io.github.terradeed/terradeed-mcp-server"
 }
