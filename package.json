@@ -1,9 +1,10 @@
 {
   "name": "terradeed-mcp-server",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TerraDeed Scrape API MCP server — x402-powered web scraping and structured extraction",
   "type": "module",
   "main": "index.js",
+  "mcpName": "io.github.terradeed/terradeed-mcp-server",
   "bin": {
     "terradeed-mcp-server": "./index.js"
   },
