@@ -13,8 +13,8 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.0.0",
-    "zod": "^3.22.0",
-    "viem": "^2.0.0"
+    "viem": "^2.0.0",
+    "zod": "^3.22.0"
   },
   "keywords": [
     "mcp",
@@ -30,5 +30,6 @@
     "type": "git",
     "url": "https://github.com/terradeed/terradeed-mcp-server.git"
   },
-  "homepage": "https://terradeed.co.uk"
+  "homepage": "https://terradeed.co.uk",
+  "mcpName": "terradeed-mcp-server"
 }
