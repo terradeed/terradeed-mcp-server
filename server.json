@@ -1,0 +1,29 @@
+{
+  "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
+  "name": "io.github.terradeed/terradeed-mcp-server",
+  "description": "TerraDeed Scrape API MCP server — x402-powered web scraping and structured extraction for AI agents. Pay-per-call with USDC on Base mainnet.",
+  "repository": {
+    "url": "https://github.com/terradeed/terradeed-mcp-server",
+    "source": "github"
+  },
+  "version": "0.1.0",
+  "packages": [
+    {
+      "registryType": "npm",
+      "identifier": "terradeed-mcp-server",
+      "version": "0.1.0",
+      "transport": {
+        "type": "stdio"
+      },
+      "environmentVariables": [
+        {
+          "description": "Ethereum private key for signing x402 USDC payments on Base mainnet",
+          "isRequired": true,
+          "format": "string",
+          "isSecret": true,
+          "name": "TERRADEED_PRIVATE_KEY"
+        }
+      ]
+    }
+  ]
+}
