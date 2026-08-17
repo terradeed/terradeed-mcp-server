@@ -212,7 +212,7 @@ async function x402PayAndFetch(endpoint, body, method = "POST") {
 const server = new Server(
   {
     name: "terradeed-mcp",
-    version: "0.1.0",
+    version: "0.2.0",
   },
   { capabilities: { tools: {} } }
 );
@@ -227,7 +227,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "terradeed_scrape_url",
         description:
-          "Scrape any public URL and return clean, LLM-ready markdown. " +
+          "Clean, LLM-ready markdown from any URL. JavaScript rendering included. " +
+          "Feed web content directly into agent context without parsing HTML. " +
           "Cost: $0.01 USDC per call. Supports JavaScript-rendered pages.",
         inputSchema: {
           type: "object",
@@ -248,8 +249,8 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "terradeed_extract_structured",
         description:
-          "Extract structured JSON data from any URL using a provided schema. " +
-          "Cost: $0.05 USDC per call. The schema defines exactly what fields to extract.",
+          "Structured JSON from any webpage. Name the fields you want \u2014 company data, job listings, product specs, contact details, financial figures \u2014 and get them back with confidence scores. " +
+          "No scraper configuration needed. Cost: $0.05 USDC per call. The schema defines exactly what fields to extract.",
         inputSchema: {
           type: "object",
           properties: {
@@ -267,6 +268,30 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
             },
           },
           required: ["url", "schema"],
+        },
+      },
+      {
+        name: "terradeed_extract_property",
+        description:
+          "UK commercial property and land intelligence from any listing URL. " +
+          "Structured data: address, price, site area, use class, tenure, frontage, coordinates. " +
+          "Auto-enriched with Environment Agency flood risk, Historic England listed buildings, and DLUHC EPC data. " +
+          "Site acquisition teams use this for initial screening \u2014 replaces 30 minutes of manual research per site. " +
+          "Cost: $0.10 USDC per call. No field configuration needed \u2014 send a URL, get structured JSON.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            url: {
+              type: "string",
+              description: "The property listing URL to extract data from",
+            },
+            render_js: {
+              type: "boolean",
+              description: "Render JavaScript before extraction (default true for property portals)",
+              default: true,
+            },
+          },
+          required: ["url"],
         },
       },
       {
@@ -317,6 +342,24 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (name === "terradeed_extract_structured") {
       const { url, schema, instructions = "" } = args;
       const result = await x402PayAndFetch("/extract", { url, schema, instructions });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: result.content,
+          },
+          {
+            type: "text",
+            text: `\n---\n💰 Cost: $${result.cost} ${result.currency}\n🔗 Tx: ${result.txHash}\n📁 Endpoint: ${result.endpoint}`,
+          },
+        ],
+      };
+    }
+
+    if (name === "terradeed_extract_property") {
+      const { url, render_js = true } = args;
+      const result = await x402PayAndFetch("/extract/property", { url, js_render: render_js });
 
       return {
         content: [
