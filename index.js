@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * TerraDeed MCP Server
+ * Terradeed MCP Server
  * x402-powered web scraping and structured extraction for AI agents
  * Protocol: x402 strict-v2 on Base mainnet (eip155:8453)
  */
@@ -375,7 +375,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
 async function main() {
   const transport = new StdioServerTransport();
   await server.connect(transport);
-  console.error("TerraDeed MCP server running on stdio");
+  console.error("Terradeed MCP server running on stdio");
 }
 
 main().catch((err) => {

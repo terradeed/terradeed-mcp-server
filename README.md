@@ -1,10 +1,10 @@
-# TerraDeed MCP Server
+# Terradeed MCP Server
 
 x402-powered web scraping and structured data extraction for AI agents.
 
 ## Overview
 
-This MCP server connects your AI agent to the [TerraDeed Scrape API](https://api.terradeed.co.uk), enabling:
+This MCP server connects your AI agent to the [Terradeed Scrape API](https://api.terradeed.co.uk), enabling:
 
 - **Web scraping** — Clean, LLM-ready markdown from any URL ($0.01 USDC)
 - **Structured extraction** — Schema-driven JSON data from any page ($0.05 USDC)
@@ -98,7 +98,7 @@ Add to your MCP client config (e.g., Claude Desktop, Cursor):
 
 ## Links
 
-- [TerraDeed](https://terradeed.co.uk)
+- [Terradeed](https://terradeed.co.uk)
 - [API Docs](https://api.terradeed.co.uk)
 - [x402 Protocol](https://x402.org)
 
