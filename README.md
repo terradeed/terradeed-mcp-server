@@ -7,7 +7,8 @@ x402-powered web scraping and structured data extraction for AI agents.
 This MCP server connects your AI agent to the [Terradeed Scrape API](https://api.terradeed.co.uk), enabling:
 
 - **Web scraping** — Clean, LLM-ready markdown from any URL ($0.01 USDC)
-- **Structured extraction** — Schema-driven JSON data from any page ($0.05 USDC)
+- **Structured extraction** — Named fields back as JSON from any page ($0.05 USDC)
+- **Property extraction** — UK commercial property and land intelligence from a listing URL ($0.10 USDC)
 - **Wallet balance checks** — Free USDC balance lookups on Base mainnet
 
 Payments are handled transparently via the [x402 protocol](https://x402.org) on Base mainnet using USDC.
@@ -37,7 +38,7 @@ TERRADEED_PRIVATE_KEY=0x... terradeed-mcp-server
 
 ### `terradeed_scrape_url`
 
-Scrape any public URL and return clean markdown.
+Clean, LLM-ready markdown from any URL. JavaScript rendering included. Feed web content directly into agent context without parsing HTML.
 
 **Cost:** $0.01 USDC per call
 
@@ -50,7 +51,7 @@ Scrape any public URL and return clean markdown.
 
 ### `terradeed_extract_structured`
 
-Extract structured JSON data using a schema.
+Structured JSON from any webpage. Name the fields you want and get them back with confidence scores. The schema defines exactly what fields to extract.
 
 **Cost:** $0.05 USDC per call
 
@@ -67,6 +68,21 @@ Extract structured JSON data using a schema.
   "instructions": "Extract the product title and price"
 }
 ```
+
+### `terradeed_extract_property`
+
+UK commercial property and land intelligence from any listing URL. Returns structured data (address, price, site area, use class, tenure, frontage, coordinates), auto-enriched with flood risk, listed buildings, and EPC data. No field configuration needed.
+
+**Cost:** $0.10 USDC per call
+
+```json
+{
+  "url": "https://example.com/listing",
+  "render_js": true
+}
+```
+
+Calls `POST /extract/property` with `{ url, js_render }`. `render_js` defaults to `true`.
 
 ### `terradeed_check_wallet`
 
