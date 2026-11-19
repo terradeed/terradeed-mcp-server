@@ -6,10 +6,10 @@ x402-powered web scraping and structured data extraction for AI agents.
 
 This MCP server connects your AI agent to the [Terradeed Scrape API](https://api.terradeed.co.uk), enabling:
 
-- **Web scraping** — Clean, LLM-ready markdown from any URL ($0.01 USDC)
-- **Structured extraction** — Named fields back as JSON from any page ($0.05 USDC)
-- **Property extraction** — UK commercial property and land intelligence from a listing URL ($0.10 USDC)
-- **Wallet balance checks** — Free USDC balance lookups on Base mainnet
+- **Web scraping:** Clean, LLM-ready markdown from any URL ($0.01 USDC)
+- **Structured extraction:** Named fields back as JSON from any page ($0.05 USDC)
+- **Property extraction:** UK commercial property and land intelligence from a listing URL ($0.10 USDC)
+- **Wallet balance checks:** Free USDC balance lookups on Base mainnet
 
 Payments are handled transparently via the [x402 protocol](https://x402.org) on Base mainnet using USDC.
 
