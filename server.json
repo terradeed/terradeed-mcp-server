@@ -1,17 +1,19 @@
 {
   "$schema": "https://static.modelcontextprotocol.io/schemas/2025-12-11/server.schema.json",
   "name": "io.github.terradeed/terradeed-mcp-server",
-  "description": "Terradeed MCP server — x402 web scraping & structured extraction. Pay-per-call with USDC on Base.",
+  "title": "Terradeed MCP Server",
+  "description": "Terradeed Scrape API: paid URL scrape, structured JSON extract, and a free Base USDC check.",
+  "websiteUrl": "https://terradeed.co.uk",
   "repository": {
     "url": "https://github.com/terradeed/terradeed-mcp-server",
     "source": "github"
   },
-  "version": "0.2.2",
+  "version": "0.2.1",
   "packages": [
     {
       "registryType": "npm",
       "identifier": "terradeed-mcp-server",
-      "version": "0.2.2",
+      "version": "0.2.1",
       "transport": {
         "type": "stdio"
       },
