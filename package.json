@@ -1,7 +1,7 @@
 {
   "name": "terradeed-mcp-server",
-  "version": "0.2.2",
-  "description": "Terradeed Scrape API MCP server: x402-powered web scraping, structured extraction and UK property extraction",
+  "version": "0.3.0",
+  "description": "Terradeed MCP server: x402 pay-per-call web scraping, structured extraction, UK property, UK company checks and UK tenders",
   "type": "module",
   "main": "index.js",
   "mcpName": "io.github.terradeed/terradeed-mcp-server",
@@ -18,12 +18,16 @@
     "zod": "^3.22.0"
   },
   "keywords": [
-    "mcp",
-    "x402",
-    "web-scraping",
     "ai-agents",
+    "base",
+    "companies-house",
+    "kyb",
+    "mcp",
+    "uk-company-data",
+    "uk-tenders",
     "usdc",
-    "base"
+    "web-scraping",
+    "x402"
   ],
   "author": "Alexander Gentry <alex@terradeed.co.uk>",
   "license": "MIT",
