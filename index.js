@@ -50,7 +50,7 @@ const erc20Abi = [
 ];
 
 // ============================================================================
-// x402 Payment Flow — adapted from proven scrape.mjs (v2, EIP-3009)
+// x402 Payment Flow: adapted from proven scrape.mjs (v2, EIP-3009)
 // ============================================================================
 
 function randomNonce() {
@@ -84,7 +84,7 @@ async function x402PayAndFetch(endpoint, body, method = "POST") {
     body: body ? JSON.stringify(body) : undefined,
   };
 
-  // Step 1: Initial request — expect 402
+  // Step 1: Initial request, expect 402
   const first = await requestOnce(`${BASE_URL}${endpoint}`, requestInit);
   if (first.status !== 402) {
     throw new Error(`Expected 402, got ${first.status}: ${first.text.slice(0, 200)}`);
@@ -193,7 +193,7 @@ async function x402PayAndFetch(endpoint, body, method = "POST") {
 
   // Truncate to 60k chars to protect agent context
   const truncated = paid.text.length > 60000
-    ? paid.text.slice(0, 60000) + "\n\n[TRUNCATED — 60k char limit reached]"
+    ? paid.text.slice(0, 60000) + "\n\n[TRUNCATED: 60k char limit reached]"
     : paid.text;
 
   return {
@@ -212,7 +212,7 @@ async function x402PayAndFetch(endpoint, body, method = "POST") {
 const server = new Server(
   {
     name: "terradeed-mcp",
-    version: "0.2.2",
+    version: "0.3.0",
   },
   { capabilities: { tools: {} } }
 );
@@ -249,7 +249,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "terradeed_extract_structured",
         description:
-          "Structured JSON from any webpage. Name the fields you want — company data, job listings, product specs, contact details, financial figures — and get them back with confidence scores. " +
+          "Structured JSON from any webpage. Name the fields you want (company data, job listings, product specs, contact details, financial figures) and get them back with confidence scores. " +
           "No scraper configuration needed. Cost: $0.05 USDC per call. The schema defines exactly what fields to extract.",
         inputSchema: {
           type: "object",
@@ -275,9 +275,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         description:
           "UK commercial property and land intelligence from any listing URL. " +
           "Structured data: address, price, site area, use class, tenure, frontage, coordinates. " +
-          "Auto-enriched with Environment Agency flood risk, Historic England listed buildings, and DLUHC EPC data. " +
-          "Site acquisition teams use this for initial screening — replaces 30 minutes of manual research per site. " +
-          "Cost: $0.10 USDC per call. No field configuration needed — send a URL, get structured JSON.",
+          "Attempts enrichment from Environment Agency flood risk, Historic England listed buildings, and DLUHC EPC data where available. " +
+          "Built for initial site screening by acquisition teams. " +
+          "Cost: $0.10 USDC per call. No field configuration needed: send a URL, get structured JSON.",
         inputSchema: {
           type: "object",
           properties: {
@@ -295,9 +295,66 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         },
       },
       {
+        name: "terradeed_uk_company",
+        description:
+          "UK company check from the Companies House public register. No Companies House API key needed. " +
+          "Returns name, status (active, dissolved, liquidation, proposal to strike off), company type, incorporation and dissolution dates, " +
+          "registered office, SIC codes, previous names, accounts and confirmation statement due dates with overdue flags, and recent filings with PDF links. " +
+          "Use for KYB, supplier and customer checks, lead enrichment, and credit control. Officer and PSC names are omitted. " +
+          "Cost: $0.01 USDC per lookup. Unknown numbers return 404 and are not charged.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            number: {
+              type: "string",
+              description: "Companies House company number, for example 00445790 or SC540749",
+            },
+            filings: {
+              type: "integer",
+              description: "How many recent filings to include, 0 to 25",
+              default: 10,
+            },
+          },
+          required: ["number"],
+        },
+      },
+      {
+        name: "terradeed_uk_company_search",
+        description:
+          "Find UK companies by name on the Companies House register. Up to 20 matches with company number, " +
+          "incorporation or dissolution date, and registered office. Pass a company_number to terradeed_uk_company for the full check. " +
+          "Cost: $0.01 USDC per search.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            q: { type: "string", description: "Company name to search for" },
+            limit: { type: "integer", description: "Results to return, 1 to 20", default: 10 },
+          },
+          required: ["q"],
+        },
+      },
+      {
+        name: "terradeed_uk_tenders",
+        description:
+          "UK public tender notices from Find a Tender and Contracts Finder (Open Government Licence v3.0). " +
+          "Filter by keyword, region, stage, and update date. Up to 25 notices per call. Contact names, emails, and phone numbers are omitted. " +
+          "Cost: $0.02 USDC per search.",
+        inputSchema: {
+          type: "object",
+          properties: {
+            q: { type: "string", description: "Words matched against title, buyer, and description" },
+            region: { type: "string", description: "uk (default), england, scotland, wales, northern-ireland, or an English region such as north-west" },
+            updated_from: { type: "string", description: "YYYY-MM-DD. Defaults to the last 30 days" },
+            stage: { type: "string", enum: ["planning", "tender", "award"] },
+            limit: { type: "integer", description: "1 to 25", default: 25 },
+          },
+          required: [],
+        },
+      },
+      {
         name: "terradeed_check_wallet",
         description:
-          "Check the USDC balance of a wallet on Base mainnet. Free — no x402 payment required.",
+          "Check the USDC balance of a wallet on Base mainnet. Free, no x402 payment required.",
         inputSchema: {
           type: "object",
           properties: {
@@ -323,7 +380,7 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
   try {
     if (name === "terradeed_scrape_url") {
       const { url, render_js = false } = args;
-      const result = await x402PayAndFetch("/scrape", { url, render_js });
+      const result = await x402PayAndFetch("/scrape", { url, js_render: render_js });
 
       return {
         content: [
@@ -340,8 +397,11 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     }
 
     if (name === "terradeed_extract_structured") {
-      const { url, schema, instructions = "" } = args;
-      const result = await x402PayAndFetch("/extract", { url, schema, instructions });
+      const { url, schema } = args;
+      // The API takes a list of field names. Use the schema's property names.
+      const fields = Object.keys(schema?.properties || {});
+      if (!fields.length) throw new Error("schema.properties must name at least one field");
+      const result = await x402PayAndFetch("/extract", { url, fields, js_render: false });
 
       return {
         content: [
@@ -360,6 +420,33 @@ server.setRequestHandler(CallToolRequestSchema, async (request) => {
     if (name === "terradeed_extract_property") {
       const { url, render_js = true } = args;
       const result = await x402PayAndFetch("/extract/property", { url, js_render: render_js });
+
+      return {
+        content: [
+          {
+            type: "text",
+            text: result.content,
+          },
+          {
+            type: "text",
+            text: `\n---\n💰 Cost: $${result.cost} ${result.currency}\n🔗 Tx: ${result.txHash}\n📁 Endpoint: ${result.endpoint}`,
+          },
+        ],
+      };
+    }
+
+    if (name === "terradeed_uk_company" || name === "terradeed_uk_company_search" || name === "terradeed_uk_tenders") {
+      const paths = {
+        terradeed_uk_company: "/v1/uk/company",
+        terradeed_uk_company_search: "/v1/uk/company/search",
+        terradeed_uk_tenders: "/v1/uk/tenders",
+      };
+      const params = new URLSearchParams();
+      for (const [key, value] of Object.entries(args || {})) {
+        if (value !== undefined && value !== null && value !== "") params.set(key, String(value));
+      }
+      const query = params.toString();
+      const result = await x402PayAndFetch(`${paths[name]}${query ? `?${query}` : ""}`, null, "GET");
 
       return {
         content: [

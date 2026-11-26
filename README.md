@@ -9,6 +9,9 @@ This MCP server connects your AI agent to the [Terradeed Scrape API](https://api
 - **Web scraping:** Clean, LLM-ready markdown from any URL ($0.01 USDC)
 - **Structured extraction:** Named fields back as JSON from any page ($0.05 USDC)
 - **Property extraction:** UK commercial property and land intelligence from a listing URL ($0.10 USDC)
+- **UK company checks:** Companies House profile, status, overdue flags, SIC codes and recent filings, no Companies House key needed ($0.01 USDC)
+- **UK company search:** find companies by name on the Companies House register ($0.01 USDC)
+- **UK tenders:** public tender notices from Find a Tender and Contracts Finder ($0.02 USDC)
 - **Wallet balance checks:** Free USDC balance lookups on Base mainnet
 
 Payments are handled transparently via the [x402 protocol](https://x402.org) on Base mainnet using USDC.
@@ -69,9 +72,39 @@ Structured JSON from any webpage. Name the fields you want and get them back wit
 }
 ```
 
+### `terradeed_uk_company`
+
+UK company check from the Companies House public register: status, type, incorporation date, registered office, SIC codes, previous names, accounts and confirmation statement due dates with overdue flags, and recent filings. Officer and PSC names are omitted. Unknown numbers return 404 and are not charged.
+
+**Cost:** $0.01 USDC per lookup
+
+```json
+{ "number": "00445790", "filings": 10 }
+```
+
+### `terradeed_uk_company_search`
+
+Find UK companies by name. Up to 20 matches with company number, dates and registered office.
+
+**Cost:** $0.01 USDC per search
+
+```json
+{ "q": "tesco", "limit": 10 }
+```
+
+### `terradeed_uk_tenders`
+
+UK public tender notices from Find a Tender and Contracts Finder, Open Government Licence v3.0. Contact details are omitted.
+
+**Cost:** $0.02 USDC per search
+
+```json
+{ "q": "AI training", "region": "north-west", "stage": "tender", "limit": 25 }
+```
+
 ### `terradeed_extract_property`
 
-UK commercial property and land intelligence from any listing URL. Returns structured data (address, price, site area, use class, tenure, frontage, coordinates), auto-enriched with flood risk, listed buildings, and EPC data. No field configuration needed.
+UK commercial property and land intelligence from any listing URL. Returns structured data (address, price, site area, use class, tenure, frontage, coordinates), with attempted enrichment from flood risk, listed buildings and EPC data where available. No field configuration needed.
 
 **Cost:** $0.10 USDC per call
 
