@@ -50,7 +50,7 @@ const erc20Abi = [
 ];
 
 // ============================================================================
-// x402 Payment Flow — adapted from proven scrape.mjs (v2, EIP-3009)
+// x402 Payment Flow: adapted from proven scrape.mjs (v2, EIP-3009)
 // ============================================================================
 
 function randomNonce() {
@@ -84,7 +84,7 @@ async function x402PayAndFetch(endpoint, body, method = "POST") {
     body: body ? JSON.stringify(body) : undefined,
   };
 
-  // Step 1: Initial request — expect 402
+  // Step 1: Initial request, expect 402
   const first = await requestOnce(`${BASE_URL}${endpoint}`, requestInit);
   if (first.status !== 402) {
     throw new Error(`Expected 402, got ${first.status}: ${first.text.slice(0, 200)}`);
@@ -193,7 +193,7 @@ async function x402PayAndFetch(endpoint, body, method = "POST") {
 
   // Truncate to 60k chars to protect agent context
   const truncated = paid.text.length > 60000
-    ? paid.text.slice(0, 60000) + "\n\n[TRUNCATED — 60k char limit reached]"
+    ? paid.text.slice(0, 60000) + "\n\n[TRUNCATED: 60k char limit reached]"
     : paid.text;
 
   return {
@@ -249,7 +249,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "terradeed_extract_structured",
         description:
-          "Structured JSON from any webpage. Name the fields you want — company data, job listings, product specs, contact details, financial figures — and get them back with confidence scores. " +
+          "Structured JSON from any webpage. Name the fields you want (company data, job listings, product specs, contact details, financial figures) and get them back with confidence scores. " +
           "No scraper configuration needed. Cost: $0.05 USDC per call. The schema defines exactly what fields to extract.",
         inputSchema: {
           type: "object",
@@ -275,9 +275,9 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
         description:
           "UK commercial property and land intelligence from any listing URL. " +
           "Structured data: address, price, site area, use class, tenure, frontage, coordinates. " +
-          "Auto-enriched with Environment Agency flood risk, Historic England listed buildings, and DLUHC EPC data. " +
-          "Site acquisition teams use this for initial screening — replaces 30 minutes of manual research per site. " +
-          "Cost: $0.10 USDC per call. No field configuration needed — send a URL, get structured JSON.",
+          "Attempts enrichment from Environment Agency flood risk, Historic England listed buildings, and DLUHC EPC data where available. " +
+          "Built for initial site screening by acquisition teams. " +
+          "Cost: $0.10 USDC per call. No field configuration needed: send a URL, get structured JSON.",
         inputSchema: {
           type: "object",
           properties: {
@@ -297,7 +297,7 @@ server.setRequestHandler(ListToolsRequestSchema, async () => {
       {
         name: "terradeed_check_wallet",
         description:
-          "Check the USDC balance of a wallet on Base mainnet. Free — no x402 payment required.",
+          "Check the USDC balance of a wallet on Base mainnet. Free, no x402 payment required.",
         inputSchema: {
           type: "object",
           properties: {

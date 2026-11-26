@@ -71,7 +71,7 @@ Structured JSON from any webpage. Name the fields you want and get them back wit
 
 ### `terradeed_extract_property`
 
-UK commercial property and land intelligence from any listing URL. Returns structured data (address, price, site area, use class, tenure, frontage, coordinates), auto-enriched with flood risk, listed buildings, and EPC data. No field configuration needed.
+UK commercial property and land intelligence from any listing URL. Returns structured data (address, price, site area, use class, tenure, frontage, coordinates), with attempted enrichment from flood risk, listed buildings and EPC data where available. No field configuration needed.
 
 **Cost:** $0.10 USDC per call
 
